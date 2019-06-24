@@ -18,15 +18,19 @@ class Server():
         print('subscribe_msg: {}'.format(self._config['subscribe_msg']))
         self.ps = self.r.pubsub()
         self.ps.subscribe([self._config['subscribe_msg']])  # 订阅消息
+
         self.get_receivers()
 
 
     def get_receivers(self):
-        if 'friends' in self._config:
-            self._receivers += [self._bot.friends().search(f)[0] for f in self._config['friends']]
-        if 'groups' in self._config:
-            self._receivers += [self._bot.groups().search(g)[0] for g in self._config['groups']]  
-        print('wechat receivers: {}'.format(self._receivers))
+        try:
+            if 'friends' in self._config:
+                self._receivers += [self._bot.friends().search(f)[0] for f in self._config['friends']]
+            if 'groups' in self._config:
+                self._receivers += [self._bot.groups().search(g)[0] for g in self._config['groups']]
+            print('wechat receivers: {}'.format(self._receivers))
+        except Exception as e:
+            print('error: {}'.format(e))
 
     def handle_data(self, data):
         for friend in self._receivers:
@@ -37,8 +41,8 @@ class Server():
         for item in self.ps.listen():  # 监听状态：有消息发布了就拿过来
             if item['type'] == 'message':
                 try:
-                    data = json.loads(item['data'])
-                    # data = item['data']
+                    # data = json.loads(item['data'])
+                    data = item['data']
                     print('redis subscribe data: {}'.format(data))
                     self.handle_data(data)
                 except Exception as e:

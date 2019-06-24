@@ -1,10 +1,13 @@
 
 [config]
+# redis config
 redis_host = '127.0.0.1'
 redis_port = 6379
-redis_password = 'xxx'
+redis_password = 'XXX'
 
+# redis消息订阅
 subscribe_msg='wechat-warnning-test'
+# 发送的个人微信或者微信群
 friends=['JC']
-groups=['warnning']
+# groups=['warnning']
 
