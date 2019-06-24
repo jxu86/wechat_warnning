@@ -1,4 +1,3 @@
-from wechat_sender import *
 from wxpy import *
 import redis
 import argparse
